@@ -19,16 +19,32 @@ resource "aws_instance" "nginx-server" {
   key_name = aws_key_pair.nginx-server-ssh.key_name
   vpc_security_group_ids = [aws_security_group.nginx-server-sg.id]
 
+  tags = {
+    Name = "nginx-server"
+    Enviroment = "test"
+    Owner = "scarmona04@hotmail.com"
+    Team = "Devops"
+    Proyect = "hunglesti"
+  }
+
 }
 
-
+###Llaves SSH###
 resource "aws_key_pair" "nginx-server-ssh" {
   key_name = "nginx-server-ssh"
   public_key = file("nginx-server.key.pub")
+
+  tags = {
+    Name = "nginx-server-ssh"
+    Enviroment = "test"
+    Owner = "scarmona04@hotmail.com"
+    Team = "Devops"
+    Proyect = "hunglesti"
+  }
 }
 
 
-##Security Groups###
+###Security Groups###
 resource "aws_security_group" "nginx-server-sg" {
   
   name = "nginx-server-sg"
@@ -55,4 +71,23 @@ resource "aws_security_group" "nginx-server-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  tags = {
+    Name = "nginx-server-sg"
+    Enviroment = "test"
+    Owner = "scarmona04@hotmail.com"
+    Team = "Devops"
+    Proyect = "hunglesti"
+  }
+
+
+}
+
+output "server_public_dns" {
+    description = "Obtener la direccion DNS de mis instancias"
+    value = aws_instance.nginx-server.public_dns
+  }
+
+output "server_public_ip" {
+  description = "Obtener la direccip ip publica de mis instancias"
+  value = aws_instance.nginx-server.public_ip
 }
